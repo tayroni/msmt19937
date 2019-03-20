@@ -1267,10 +1267,10 @@ integer*8, parameter :: maska    = 6148914691236517205_int64
 integer*8, parameter :: maskb    = 8202884508482404352_int64
 integer*8, parameter :: maskc    = -2270628950310912_int64
 
-integer, parameter :: shift0   = -29_int64
-integer, parameter :: shiftb   = 17_int64
-integer, parameter :: shiftc   = 37_int64
-integer, parameter :: shift1   = -43_int64
+integer, parameter :: shift0   = -29
+integer, parameter :: shiftb   = 17
+integer, parameter :: shiftc   = 37
+integer, parameter :: shift1   = -43
 
 real*8, parameter :: pi253_1  = 1.d0/(2.d0**53 - 1.d0)
 real*8, parameter :: pi253    = 1.d0/(2.d0**53)
