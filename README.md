@@ -14,18 +14,19 @@ A rationale about jump ahead can be found [here](http://www.math.sci.hiroshima-u
 
 1) Call the relevant module on your main program
 
-> use msmt19937
+`use msmt19937`
 
 2) Before generate any pseudorandom number, initialize the state by using
 
-> call init_genrand(seed)
+`call init_genrand(seed)`
 
 on your code, or
 
-> call init_by_array(init_key)
+`call init_by_array(init_key)`
 
-3) To jump ahead pseudorandom sequence by id*2^jp steps
-call mt_jumpahead(id,jp)
+3) To jump ahead pseudorandom sequence by `id*2^jp` steps
+
+`call mt_jumpahead(id,jp)`
 
 # Testing this code
 
