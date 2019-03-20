@@ -31,7 +31,7 @@ on your code, or
 # Testing this code
 
 This code depends on gf2xe module and OpenMPI. A (slightly modified) copy of gf2xe module is already placed
-on msmt19937 file. Original code of gf2xe is found [here](http://theo.phys.sci.hiroshima-u.ac.jp/~ishikawa/PRNG/mt_stream_en.html).
+on msmt19937.f90 file. Original code of gf2xe is found [here](http://theo.phys.sci.hiroshima-u.ac.jp/~ishikawa/PRNG/mt_stream_en.html).
 
 1) To compile, one can type in terminal:
 
