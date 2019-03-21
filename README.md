@@ -4,6 +4,8 @@ Mersenne twister is a PRNG (pseudo random number sequence generator). It is aime
 
 More information about Mersenne Twister can be found [here](http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html).
 
+# Jump Ahead
+
 This code advances random sequence in a way one can split a huge pseudo random sequence in (almost) non-colliding
 streams. This procedure is better than just using different seeds across nodes in a parallel simulation, avoiding
 a source of bias.
@@ -30,14 +32,16 @@ on your code, or
 
 # Testing this code
 
-This code depends on gf2xe module and OpenMPI. A (slightly modified) copy of gf2xe module is already placed
+This code depends on gf2xe module. A (slightly modified) copy of gf2xe module is already placed
 on msmt19937.f90 file. Original code of gf2xe is found [here](http://theo.phys.sci.hiroshima-u.ac.jp/~ishikawa/PRNG/mt_stream_en.html).
 
-1) To compile, one can type in terminal:
+Additionally, this code comes with a main program to generate some streams. It depends on OpenMPI.
+
+1) To compile, run this command:
 
 > mpif90 -o exec.exe msmt19937.f90
 
-2) To execute, just type in terminal:
+2) To execute, just run this command:
 
 > mpirun -np 4 exec.exe
 
