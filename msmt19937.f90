@@ -1378,7 +1378,7 @@ integer np
 integer*8 pp(nn)
 type(gf2x_obj) :: af,bf,ff,f1,f2
 type(gf2x_prime_obj) :: fp
-integer :: i,ib
+integer :: i,ib,nws
 
 !MT characteristic polynomial
 !ff : MT char poly.
@@ -1428,8 +1428,8 @@ call pow(ff,f1,id,fp) ! ff = f1**id mod fp
 
 pp(:) = 0
 np = get_deg(ff)
-
-pp(1:np) = ff%c(0:np-1)
+nws = ceiling(dfloat(np)/32.d0)
+pp(1:nws) = ff%c(0:nws-1)
 
 call delete(f1)
 call delete(f2)
