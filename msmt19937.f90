@@ -1268,10 +1268,10 @@ integer*8, parameter :: maska    = 6148914691236517205_int64
 integer*8, parameter :: maskb    = 8202884508482404352_int64
 integer*8, parameter :: maskc    = -2270628950310912_int64
 
-integer, parameter :: shift0   = -29
-integer, parameter :: shiftb   = 17
-integer, parameter :: shiftc   = 37
-integer, parameter :: shift1   = -43
+integer*8, parameter :: shift0   = -29_int64
+integer*8, parameter :: shiftb   = 17_int64
+integer*8, parameter :: shiftc   = 37_int64
+integer*8, parameter :: shift1   = -43_int64
 
 real*8, parameter :: pi253_1  = 1.d0/(2.d0**53 - 1.d0)
 real*8, parameter :: pi253    = 1.d0/(2.d0**53)
@@ -1378,7 +1378,7 @@ integer np
 integer*8 pp(nn)
 type(gf2x_obj) :: af,bf,ff,f1,f2
 type(gf2x_prime_obj) :: fp
-integer :: i,ib,nws
+integer :: i,ib
 
 !MT characteristic polynomial
 !ff : MT char poly.
@@ -1428,8 +1428,8 @@ call pow(ff,f1,id,fp) ! ff = f1**id mod fp
 
 pp(:) = 0
 np = get_deg(ff)
-nws = CEILING(real(np,kind=KIND(1.0d0))/32)
-pp(1:nws) = ff%c(0:nws-1)
+
+pp(1:np) = ff%c(0:np-1)
 
 call delete(f1)
 call delete(f2)
