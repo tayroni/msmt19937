@@ -7,7 +7,7 @@ More information about Mersenne Twister can be found [here](http://www.math.sci.
 # Jump Ahead
 
 This code advances random sequence in a way one can split a huge pseudo random sequence in (almost) non-colliding
-streams. This procedure is better than just using different seeds across nodes in a parallel simulation, avoiding
+streams. This procedure is better than just using different seeds across nodes in a parallel simulation, in order to avoid
 a source of bias.
 
 A rationale about jump ahead can be found [here](http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/JUMP/index.html).
