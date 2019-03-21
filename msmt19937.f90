@@ -1717,13 +1717,13 @@ end module msmt19937
 program test_msmt19937
 
 !++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-!Main code to test mt19937 module and showcase relevant subroutines
+!Main code to test msmt19937 module and showcase relevant subroutines
 !and functions needed to call the Mersenne Twister random number generator
-!Comment this main routine if you want to use mt19937 module with
+!Comment this main routine if you want to use msmt19937 module with
 !your main FORTRAN program
 !++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-!Call the relevant modules
+!Call relevant modules
 use mpi
 use msmt19937
 use iso_fortran_env !64bit integers
