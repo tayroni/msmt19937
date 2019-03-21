@@ -1172,7 +1172,8 @@ module msmt19937
 !       call init_genrand(seed)
 !   or
 !       call init_by_array(init_key)
-!   To jump ahead pseudorandom sequence by id*2^jp steps
+!   To jump ahead pseudorandom sequence by id*2^jp steps (id should be a 
+!   positive integer)
 !       call mt_jumpahead(id,jp)
 ! 
 ! Tayroni Alves 
