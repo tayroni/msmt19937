@@ -1161,7 +1161,7 @@ module msmt19937
 !   following modifications:
 ! 
 ! * Save state to restart PRNG from where it was interrupted
-! * JUMP AHEAD prng, allowing to split single random number series
+! * JUMP AHEAD prng, allowing to split single random number sequence
 !   from 64bit Mersenne Twister (MT19937_64) into (almost) multiple independent
 !   streams. Therefore, splitted streams can be used on parallel simulations
 !   with MPI. Code for jump ahead is based on mt_stream.f90 module
@@ -1733,9 +1733,9 @@ integer i,randseqterm
 integer, parameter :: randseqsize=16 !lenght of generated random sequence
 integer*8 seed !Declare seeds as 64bit integers
 integer id,jp
-integer ierror !Flag de erro              !mpi_init, mpi_abort, mpi_comm_rank, mpi_comm_size, mpi_finalize
-integer idproc !Identificador do processo !mpi_comm_rank
-integer ntproc !Número total de processos !mpi_comm_size
+integer ierror !Error flag          !mpi_init, mpi_abort, mpi_comm_rank, mpi_comm_size, mpi_finalize
+integer idproc !Process ID          !mpi_comm_rank
+integer ntproc !Number of processes !mpi_comm_size
 integer status(mpi_status_size)
 character*50 greeting
 
