@@ -21,7 +21,8 @@ module gf2xe
   public :: shift
   public :: deg_i32, mult_i32, square_i32, shift_i32
   public :: mult_i32_old
-  public :: gf2x_pow_pow_2
+  public :: pow_mod
+  public :: pow_pow_2
 
   integer(INT32), parameter :: MAX_KARA  = 64
 
@@ -85,6 +86,10 @@ module gf2xe
 
   interface pow
     module procedure gf2x_pow
+  end interface
+
+  interface pow_mod
+!    module procedure gf2x_pow
     module procedure gf2x_pow_mod
   end interface
 
@@ -119,6 +124,10 @@ module gf2xe
 
   interface shift
     module procedure gf2x_shift
+  end interface
+
+  interface pow_pow_2
+    module procedure gf2x_pow_pow_2
   end interface
 
 contains
@@ -1309,14 +1318,14 @@ call f_get_coeff(n,m,31,32,matrix_a,id,jp,np,p)
 ! with simple Horner's method
 !       w = p(B) v = B^(2^jp) v
 v = mt
-iwp = np/32
-ibp = mod(np,32)
+iwp = (np-1)/32
+ibp = mod(np-1,32)
 
 if (btest(p(iwp+1),ibp)) then
    w = v
 end if
 
-do i = np-1, 0, -1
+do i = np-2,0,-1
    iwp = i/32
    ibp = mod(i,32)
    call mt_matvec(w,s)! s = B w
@@ -1419,15 +1428,16 @@ call delete(f1)
 call delete(f2)
 
 !jump ahead
+
 !long jump
-call gf2x_pow_pow_2(f1,jp,fp)   ! f1 = x**(2**jp) mod fp
+call pow_pow_2(f1,jp,fp)  ! f1 = x**(2**jp) mod fp
 
 !short jump
-call pow(ff,f1,id,fp) ! ff = f1**id mod fp
+call pow_mod(ff,f1,id,fp) ! ff = f1**id mod fp
 
 pp(:) = 0
-np = get_deg(ff)
-nws = CEILING(real(np,kind=KIND(1.0d0))/32)
+np = get_deg(ff)+1
+nws = ceiling(dfloat(np)/32.d0)
 pp(1:nws) = ff%c(0:nws-1)
 
 call delete(f1)
@@ -1716,9 +1726,9 @@ end module msmt19937
 program test_msmt19937
 
 !++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-!Main code to test mt19937 module and showcase relevant subroutines
+!Main code to test msmt19937 module and showcase relevant subroutines
 !and functions needed to call the Mersenne Twister random number generator
-!Comment this main routine if you want to use mt19937 module with
+!Comment this main routine if you want to use msmt19937 module with
 !your main FORTRAN program
 !++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -1730,7 +1740,7 @@ use iso_fortran_env !64bit integers
 implicit none
 
 integer i,randseqterm
-integer, parameter :: randseqsize=16 !lenght of generated random sequence
+integer, parameter :: randseqsize=2**4+1 !lenght of generated random sequence
 integer*8 seed !Declare seeds as 64bit integers
 integer id,jp
 integer ierror !Flag de erro              !mpi_init, mpi_abort, mpi_comm_rank, mpi_comm_size, mpi_finalize
@@ -1765,6 +1775,12 @@ call init_genrand(seed)
 !Try changing!
 if (idproc .ne. 0) call mt_jumpahead(idproc,3)
 
+!if (idproc .ne. 0) then
+!   do i=1, idproc
+!      call mt_jumpahead(1,3)
+!   end do
+!end if
+
 !Advance PRNG state by idproc*2^256 on slave nodes
 !if (idproc .ne. 0) call mt_jumpahead(idproc,256)
 
@@ -1776,7 +1792,7 @@ do i=1, ntproc
 
       !Generate a random double precision random float sequence with lenght = randseqsize
       do randseqterm=1, randseqsize
-         write(*,*) grnd()
+         write(*,*) randseqterm,grnd()
       end do
 
       write(*,*) ' '
