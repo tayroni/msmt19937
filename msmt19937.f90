@@ -224,7 +224,7 @@ subroutine gf2x_assign(c,a)
   do i=0,isa-1
     c%c(i) = a%c(i)
   enddo
-  
+
   return
 end subroutine
 
@@ -1161,19 +1161,18 @@ module msmt19937
 !   following modifications:
 ! 
 ! * Save state to restart PRNG from where it was interrupted
-! * JUMP AHEAD prng, allowing to split single random number sequence
+! * JUMP AHEAD prng, allowing to split single random number series
 !   from 64bit Mersenne Twister (MT19937_64) into (almost) multiple independent
 !   streams. Therefore, splitted streams can be used on parallel simulations
 !   with MPI. Code for jump ahead is based on mt_stream.f90 module
 !   originally coded by Ken-Ichi Ishikawa
 !   http://theo.phys.sci.hiroshima-u.ac.jp/~ishikawa/PRNG/mt_stream_en.html
- 
+
 !   Before generate any pseudorandom number, initialize the state by using
 !       call init_genrand(seed)
 !   or
 !       call init_by_array(init_key)
-!   To jump ahead pseudorandom sequence by id*2^jp steps (id should be a 
-!   positive integer)
+!   To jump ahead pseudorandom sequence by id*2^jp steps
 !       call mt_jumpahead(id,jp)
 ! 
 ! Tayroni Alves 
@@ -1268,10 +1267,10 @@ integer*8, parameter :: maska    = 6148914691236517205_int64
 integer*8, parameter :: maskb    = 8202884508482404352_int64
 integer*8, parameter :: maskc    = -2270628950310912_int64
 
-integer*8, parameter :: shift0   = -29_int64
-integer*8, parameter :: shiftb   = 17_int64
-integer*8, parameter :: shiftc   = 37_int64
-integer*8, parameter :: shift1   = -43_int64
+integer, parameter :: shift0   = -29_int64
+integer, parameter :: shiftb   = 17_int64
+integer, parameter :: shiftc   = 37_int64
+integer, parameter :: shift1   = -43_int64
 
 real*8, parameter :: pi253_1  = 1.d0/(2.d0**53 - 1.d0)
 real*8, parameter :: pi253    = 1.d0/(2.d0**53)
@@ -1428,7 +1427,7 @@ call pow(ff,f1,id,fp) ! ff = f1**id mod fp
 
 pp(:) = 0
 np = get_deg(ff)
-nws = ceiling(dfloat(np)/32.d0)
+nws = CEILING(real(np,kind=KIND(1.0d0))/32)
 pp(1:nws) = ff%c(0:nws-1)
 
 call delete(f1)
@@ -1717,13 +1716,13 @@ end module msmt19937
 program test_msmt19937
 
 !++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-!Main code to test msmt19937 module and showcase relevant subroutines
+!Main code to test mt19937 module and showcase relevant subroutines
 !and functions needed to call the Mersenne Twister random number generator
-!Comment this main routine if you want to use msmt19937 module with
+!Comment this main routine if you want to use mt19937 module with
 !your main FORTRAN program
 !++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-!Call relevant modules
+!Call the relevant modules
 use mpi
 use msmt19937
 use iso_fortran_env !64bit integers
@@ -1734,9 +1733,9 @@ integer i,randseqterm
 integer, parameter :: randseqsize=16 !lenght of generated random sequence
 integer*8 seed !Declare seeds as 64bit integers
 integer id,jp
-integer ierror !Error flag          !mpi_init, mpi_abort, mpi_comm_rank, mpi_comm_size, mpi_finalize
-integer idproc !Process ID          !mpi_comm_rank
-integer ntproc !Number of processes !mpi_comm_size
+integer ierror !Flag de erro              !mpi_init, mpi_abort, mpi_comm_rank, mpi_comm_size, mpi_finalize
+integer idproc !Identificador do processo !mpi_comm_rank
+integer ntproc !Número total de processos !mpi_comm_size
 integer status(mpi_status_size)
 character*50 greeting
 
@@ -1764,7 +1763,7 @@ call init_genrand(seed)
 
 !Advance PRNG state by idproc*2^2 on slave nodes
 !Try changing!
-if (idproc .ne. 0) call mt_jumpahead(idproc,2)
+if (idproc .ne. 0) call mt_jumpahead(idproc,3)
 
 !Advance PRNG state by idproc*2^256 on slave nodes
 !if (idproc .ne. 0) call mt_jumpahead(idproc,256)
@@ -1792,4 +1791,3 @@ end do
 call mpi_finalize(ierror)
 
 end
-
