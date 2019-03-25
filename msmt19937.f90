@@ -1743,9 +1743,9 @@ integer i,randseqterm
 integer, parameter :: randseqsize=2**4+1 !lenght of generated random sequence
 integer*8 seed !Declare seeds as 64bit integers
 integer id,jp
-integer ierror !Flag de erro              !mpi_init, mpi_abort, mpi_comm_rank, mpi_comm_size, mpi_finalize
-integer idproc !Identificador do processo !mpi_comm_rank
-integer ntproc !Número total de processos !mpi_comm_size
+integer ierror !Error flag              !mpi_init, mpi_abort, mpi_comm_rank, mpi_comm_size, mpi_finalize
+integer idproc !Process ID              !mpi_comm_rank
+integer ntproc !Number of processes     !mpi_comm_size
 integer status(mpi_status_size)
 character*50 greeting
 
@@ -1771,7 +1771,7 @@ end if
 seed = 1145_int64
 call init_genrand(seed)
 
-!Advance PRNG state by idproc*2^2 on slave nodes
+!Advance PRNG state by idproc*2^3 on slave nodes
 !Try changing!
 if (idproc .ne. 0) call mt_jumpahead(idproc,3)
 
