@@ -1365,7 +1365,7 @@ integer i
 new(1) = iand(old(2),umask)
 new(2:n-1) = old(3:n)
 x = ior(iand(old(1), umask), iand(old(2), lmask))
-new(n) = ieor(ieor(old(m), ishft(x, -1_int64)), mag01(iand(x, 1_int64)))
+new(n) = ieor(ieor(old(m+1), ishft(x, -1_int64)), mag01(iand(x, 1_int64)))
 
 return
 
