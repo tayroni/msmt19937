@@ -1676,13 +1676,13 @@ end
 ! Generates a random number on [0,1) real interval
 !-----------------------------------------------------------------------------
 
-function grnd() result(r)
+function grnd() result(x)
 
 implicit none
 
-real*8 :: r
+real*8 :: x
 
-r = dfloat(ishft(grndint(), -11_int64)) * pi253
+x = dfloat(ishft(grndint(), -11_int64)) * pi253
 
 end
 
@@ -1690,13 +1690,13 @@ end
 ! Generates a random number on [0,1] real interval
 !-----------------------------------------------------------------------------
 
-function grnd1() result(r)
+function grnd1() result(x)
 
 implicit none
 
-real*8 :: r
+real*8 :: x
 
-r = dfloat(ishft(grndint(), -11_int64)) * pi253_1
+x = dfloat(ishft(grndint(), -11_int64)) * pi253_1
 
 return
 
@@ -1706,14 +1706,14 @@ end
 ! Generates a random number on (0,1) real interval
 !-----------------------------------------------------------------------------
 
-function grnd2() result(r)
+function grnd2() result(x)
 
 implicit none
 
-real*8 :: r
+real*8 :: x
 
-r = dfloat(ishft(grndint(), -12_int64))
-r = (r + 0.5d0) * pi252
+x = dfloat(ishft(grndint(), -12_int64))
+x = (x + 0.5d0) * pi252
 
 return
 
