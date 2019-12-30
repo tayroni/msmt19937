@@ -1267,6 +1267,8 @@ public :: grndint
 
 integer, parameter :: n = 312
 integer, parameter :: m = 156
+integer, parameter :: w = 64
+integer, parameter :: r = 31
 
 integer*8, parameter :: seed_def = 5489_int64
 integer*8, parameter :: matrix_a = -5403634167711393303_int64
@@ -1306,37 +1308,37 @@ integer :: id ! id       (jump step = id*2^jp)
 integer*8 p(n) !jumpahead polynomial coefficients
 integer np
 integer i,iwp,ibp
-integer*8 :: v(n),w(n),s(n)
+integer*8 :: v(n),u(n),s(n)
 
 ! compute jump ahead polynomial
 ! p(x) coefficients for this MT parameter
-call f_get_coeff(n,m,31,32,matrix_a,id,jp,np,p)
+call f_get_coeff(n,m,r,w,matrix_a,id,jp,np,p)
 
 ! multiply p(B) on a state vector v
 !  p(x) : jump ahead polynomial
 !    B  : transition matrix
 ! with simple Horner's method
-!       w = p(B) v = B^(2^jp) v
+!       u = p(B) v = B^(2^jp) v
 v = mt
 iwp = (np-1)/32
 ibp = mod(np-1,32)
 
 if (btest(p(iwp+1),ibp)) then
-   w = v
+   u = v
 end if
 
 do i = np-2,0,-1
    iwp = i/32
    ibp = mod(i,32)
-   call mt_matvec(w,s)! s = B w
+   call mt_matvec(u,s)! s = B u
    if (btest(p(iwp+1),ibp)) then
-      w = ieor(v,s)   ! w = 1 v + s
+      u = ieor(v,s)   ! u = 1 v + s
    else
-      w = s           ! w = 0 v + s
+      u = s           ! u = 0 v + s
    end if
 end do
 
-mt = w
+mt = u
 mti = n
 
 return
