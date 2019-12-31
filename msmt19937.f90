@@ -1267,7 +1267,7 @@ public :: grndint
 
 integer, parameter :: n = 312
 integer, parameter :: m = 156
-integer, parameter :: w = 64
+integer, parameter :: w = 32
 integer, parameter :: r = 31
 
 integer*8, parameter :: seed_def = 5489_int64
